@@ -6,6 +6,8 @@ import com.sun.jna.win32.StdCallLibrary;
 
 import kr.neko.sokcuri.naraechat.Keyboard.*;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.INestedGuiEventHandler;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -74,14 +76,49 @@ public class Main
 
     @SubscribeEvent
     public void onSpecialKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
-        if (event.getKeyCode() == getBindingKeyCode(0)) {
+
+        int keyCode = event.getKeyCode();
+        int scanCode = event.getScanCode();
+
+        // 102 키보드 문제 수정. 한글/한자 키를 강재로 리매핑한다
+        if (keyCode == -1 && scanCode == 0x1F2 || keyCode == -1 && scanCode == 0x1F1) {
+            if (scanCode == 0x1F2) {
+                keyCode = GLFW_KEY_RIGHT_ALT;
+                scanCode = glfwGetKeyScancode(keyCode);
+            } else if (scanCode == 0x1F1) {
+                keyCode = GLFW_KEY_RIGHT_CONTROL;
+                scanCode = glfwGetKeyScancode(keyCode);
+            }
+
+            event.setCanceled(true);
+
+            int glfwModifier = 0;
+            if (KeyModifier.getActiveModifier() == KeyModifier.SHIFT) {
+                glfwModifier = GLFW_MOD_SHIFT;
+            } else if (KeyModifier.getActiveModifier() == KeyModifier.CONTROL) {
+                glfwModifier = GLFW_MOD_CONTROL;
+            } else if (KeyModifier.getActiveModifier() == KeyModifier.ALT) {
+                glfwModifier = GLFW_MOD_ALT;
+            }
+
+            Minecraft mc = Minecraft.getInstance();
+            ((INestedGuiEventHandler)mc.currentScreen).keyPressed(keyCode, scanCode, glfwModifier);
+        }
+
+        KeyModifier modifier = KeyModifier.getActiveModifier();
+        if (keyCode == GLFW_KEY_LEFT_CONTROL || keyCode == GLFW_KEY_RIGHT_CONTROL) {
+            modifier = KeyModifier.NONE;
+        } else if (keyCode == GLFW_KEY_LEFT_ALT || keyCode == GLFW_KEY_RIGHT_ALT) {
+            modifier = KeyModifier.NONE;
+        }
+
+        if (keyBindings[0].matchesKey(keyCode, scanCode) && keyBindings[0].getKeyModifier() == modifier) {
             switchKeyboardLayout();
         }
 
-        else if (event.getKeyCode() == getBindingKeyCode(1)) {
-            // hanja key
+        if (keyBindings[1].matchesKey(keyCode, scanCode) && keyBindings[1].getKeyModifier() == modifier) {
+            // hanja
         }
-
     }
 
     @SubscribeEvent
@@ -114,7 +151,8 @@ public class Main
         keyBindings[1] = new KeyBinding("key.naraechat.hanja.desc", GLFW_KEY_RIGHT_CONTROL, "key.naraechat.category");
 
         if (Platform.isWindows()) {
-            // pass
+            keyBindings[0].setKeyModifierAndCode(KeyModifier.NONE, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW_KEY_RIGHT_ALT));
+            keyBindings[1].setKeyModifierAndCode(KeyModifier.NONE, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW_KEY_RIGHT_CONTROL));
         }
         else if (Platform.isMac()) {
             keyBindings[0].setKeyModifierAndCode(KeyModifier.CONTROL, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW_KEY_SPACE));

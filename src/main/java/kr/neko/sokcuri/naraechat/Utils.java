@@ -68,7 +68,6 @@ public class Utils {
         if (!textFieldWidgetFieldMap.containsKey(o.getClass().getName())) {
             ArrayList<String> textFieldWidgetFields = new ArrayList<>();
             for (Field field : o.getClass().getDeclaredFields()) {
-                System.out.println(String.format("t: %s %s", field.getType().getName(), field.getName()));
                 if (field.getType().getName() == "net.minecraft.client.gui.widget.TextFieldWidget") {
                     textFieldWidgetFields.add(field.getName());
                 }
