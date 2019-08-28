@@ -8,6 +8,8 @@ import kr.neko.sokcuri.naraechat.Keyboard.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.INestedGuiEventHandler;
+import net.minecraft.client.gui.screen.ControlsScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -75,10 +77,23 @@ public class Main
     }
 
     @SubscribeEvent
-    public void onSpecialKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    public void proxyHangulSpecificKey(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
 
         int keyCode = event.getKeyCode();
         int scanCode = event.getScanCode();
+
+        Minecraft mc = Minecraft.getInstance();
+
+        KeyModifier activeModifier = KeyModifier.getActiveModifier();
+
+        int glfwModifier = 0;
+        if (activeModifier == KeyModifier.SHIFT) {
+            glfwModifier = GLFW_MOD_SHIFT;
+        } else if (activeModifier == KeyModifier.CONTROL) {
+            glfwModifier = GLFW_MOD_CONTROL;
+        } else if (activeModifier == KeyModifier.ALT) {
+            glfwModifier = GLFW_MOD_ALT;
+        }
 
         // 102 키보드 문제 수정. 한글/한자 키를 강재로 리매핑한다
         if (keyCode == -1 && scanCode == 0x1F2 || keyCode == -1 && scanCode == 0x1F1) {
@@ -91,19 +106,17 @@ public class Main
             }
 
             event.setCanceled(true);
+        }
 
-            int glfwModifier = 0;
-            if (KeyModifier.getActiveModifier() == KeyModifier.SHIFT) {
-                glfwModifier = GLFW_MOD_SHIFT;
-            } else if (KeyModifier.getActiveModifier() == KeyModifier.CONTROL) {
-                glfwModifier = GLFW_MOD_CONTROL;
-            } else if (KeyModifier.getActiveModifier() == KeyModifier.ALT) {
-                glfwModifier = GLFW_MOD_ALT;
+        // 키 바인딩 설정창일 때 우측 CONTROL이나 ALT가 단독으로만 동작하게 만들기
+        if (mc.currentScreen instanceof ControlsScreen) {
+            ControlsScreen controlsScreen = (ControlsScreen)mc.currentScreen;
+            if (keyCode == GLFW_KEY_RIGHT_CONTROL || keyCode == GLFW_KEY_RIGHT_ALT) {
+                controlsScreen.keyPressed(keyCode, scanCode, glfwModifier);
+                controlsScreen.buttonId = null;
+                event.setCanceled(true);
+                return;
             }
-
-            Minecraft mc = Minecraft.getInstance();
-            mc.currentScreen.keyPressed(keyCode, scanCode, glfwModifier);
-            mc.currentScreen.keyReleased(keyCode, scanCode, glfwModifier);
         }
 
         KeyModifier modifier = KeyModifier.getActiveModifier();
