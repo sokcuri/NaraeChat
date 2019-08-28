@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: NaraeChat
-Implementation-Version: 1.14.4-0.1.0
-Specification-Vendor: examplemodsareus
-Specification-Title: examplemod
-Implementation-Timestamp: 2019-08-28T22:41:33+0900
-Specification-Version: 1
-Implementation-Vendor: examplemodsareus
-
