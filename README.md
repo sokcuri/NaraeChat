@@ -11,6 +11,9 @@
 ## 라이센스
 LGPL 3.0
 
+## 나래챗 다운받기
+https://github.com/sokcuri/NaraeChat/releases
+
 ## 기능
 * 한영키로 한글/영어 전환 가능
 * 한글 상태에서도 모든 키를 조작 가능
