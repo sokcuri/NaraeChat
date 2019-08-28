@@ -102,7 +102,8 @@ public class Main
             }
 
             Minecraft mc = Minecraft.getInstance();
-            ((INestedGuiEventHandler)mc.currentScreen).keyPressed(keyCode, scanCode, glfwModifier);
+            mc.currentScreen.keyPressed(keyCode, scanCode, glfwModifier);
+            mc.currentScreen.keyReleased(keyCode, scanCode, glfwModifier);
         }
 
         KeyModifier modifier = KeyModifier.getActiveModifier();
