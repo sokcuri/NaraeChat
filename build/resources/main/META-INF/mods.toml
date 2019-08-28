@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+issueTrackerURL="https://github.com/sokcuri/naraechat/issues"
+[[mods]]
+modId="naraechat"
+version="1.14.4-0.1.0"
+displayName="Narae Chat"
+updateJSONURL="https://raw.githubusercontent.com/sokcuri/naraechat/master/data/update.json"
+displayURL="https://github.com/sokcuri/naraechat"
+authors="sokcuri"
+description="나래챗은 마인크래프트 한글 입력을 도와줍니다. by 소쿠릿"
+
+[[dependencies.naraechat]] #
+    modId="forge"
+    mandatory=true
+    versionRange="[28,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.naraechat]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.14.4]"
+    ordering="NONE"
+    side="BOTH"
