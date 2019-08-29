@@ -135,15 +135,10 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
     }
 
     @Override
-    public void modifyText(String str) {
+    public void modifyText(char ch) {
         int cursorPosition = getCursorPosition();
         setCursorPosition(cursorPosition - 1);
         deleteFromCursor(1);
-        writeText(str);
-    }
-
-    @Override
-    public void modifyText(char ch) {
-        modifyText(String.valueOf(Character.toChars(ch)));
+        writeText(String.valueOf(Character.toChars(ch)));
     }
 }

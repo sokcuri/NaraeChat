@@ -1,9 +1,13 @@
 package kr.neko.sokcuri.naraechat.Obfuscated;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.fonts.TextInputUtil;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class ObfuscatedField<O, T> {
 
@@ -31,6 +35,26 @@ public final class ObfuscatedField<O, T> {
             lineScrollOffset            = new ObfuscatedField("lineScrollOffset", "field_146225_q", TextFieldWidget.class, int.class);
             maxStringLength             = new ObfuscatedField("maxStringLength", "field_146217_k", TextFieldWidget.class, int.class);
             selectionEnd                = new ObfuscatedField("selectionEnd", "field_146223_s", TextFieldWidget.class, int.class);
+        }
+    }
+
+    public static class $TextInputUtil {
+        public static final ObfuscatedField<TextInputUtil, Minecraft> minecraft;
+        public static final ObfuscatedField<TextInputUtil, FontRenderer> fontRenderer;
+        public static final ObfuscatedField<TextInputUtil, Supplier<String>> textSupplier;
+        public static final ObfuscatedField<TextInputUtil, Consumer<String>> textConsumer;
+        public static final ObfuscatedField<TextInputUtil, Integer> maxStringLength;
+        public static final ObfuscatedField<TextInputUtil, Integer> cursorPosition;
+        public static final ObfuscatedField<TextInputUtil, Integer> cursorPosition2;
+
+        static {
+            minecraft                   = new ObfuscatedField("field_216900_a", "field_216900_a", TextInputUtil.class, Minecraft.class);
+            fontRenderer                = new ObfuscatedField("field_216901_b", "field_216901_b", TextInputUtil.class, FontRenderer.class);
+            textSupplier                = new ObfuscatedField("field_216902_c", "field_216902_c", TextInputUtil.class, Supplier.class);
+            textConsumer                = new ObfuscatedField("field_216903_d", "field_216903_d", TextInputUtil.class, Consumer.class);
+            maxStringLength             = new ObfuscatedField("field_216904_e", "field_216904_e", TextInputUtil.class, int.class);
+            cursorPosition              = new ObfuscatedField("field_216905_f", "field_216905_f", TextInputUtil.class, int.class);
+            cursorPosition2             = new ObfuscatedField("field_216906_g", "field_216906_g", TextInputUtil.class, int.class);
         }
     }
 

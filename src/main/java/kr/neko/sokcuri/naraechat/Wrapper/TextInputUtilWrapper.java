@@ -1,52 +1,38 @@
 package kr.neko.sokcuri.naraechat.Wrapper;
 
+import kr.neko.sokcuri.naraechat.Obfuscated.ObfuscatedField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.fonts.TextInputUtil;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class TextInputUtilWrapper implements TextComponentWrapper {
     private final TextInputUtil base;
-    private static ArrayList<String> clsFieldNames = new ArrayList<>();
-    private static boolean isInitialized = false;
 
     public TextInputUtilWrapper(TextInputUtil inputUtil) {
         this.base = inputUtil;
-        if (!isInitialized) {
-            for (Field field : inputUtil.getClass().getDeclaredFields()) {
-                clsFieldNames.add(field.getName());
-            }
-            if (clsFieldNames.size() != 7) {
-                System.out.println("clsFieldNames size is not equals 7");
-            }
-        }
-        isInitialized = true;
     }
 
     public Minecraft getMinecraftInstance() {
-        return (Minecraft) ObfuscationReflectionHelper.getPrivateValue(TextInputUtil.class, base, clsFieldNames.get(0));
+        return ObfuscatedField.$TextInputUtil.minecraft.get(base);
     }
 
     public FontRenderer getFontRenderer() {
-        return (FontRenderer) ObfuscationReflectionHelper.getPrivateValue(TextInputUtil.class, base, clsFieldNames.get(1));
+        return ObfuscatedField.$TextInputUtil.fontRenderer.get(base);
     }
 
     public Supplier<String> getSupplier() {
-        return (Supplier<String>) ObfuscationReflectionHelper.getPrivateValue(TextInputUtil.class, base, clsFieldNames.get(2));
+        return ObfuscatedField.$TextInputUtil.textSupplier.get(base);
     }
 
     public Consumer<String> getConsumer() {
-        return (Consumer<String>) ObfuscationReflectionHelper.getPrivateValue(TextInputUtil.class, base, clsFieldNames.get(3));
+        return ObfuscatedField.$TextInputUtil.textConsumer.get(base);
     }
 
-    public int getTextMaxLength() {
-        return (int) ObfuscationReflectionHelper.getPrivateValue(TextInputUtil.class, base, clsFieldNames.get(4));
+    public int getMaxStringLength() {
+        return ObfuscatedField.$TextInputUtil.maxStringLength.get(base);
     }
 
     @Override
@@ -56,11 +42,11 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
 
     @Override
     public int getCursorPosition() {
-        return (int) ObfuscationReflectionHelper.getPrivateValue(TextInputUtil.class, base, clsFieldNames.get(5));
+        return ObfuscatedField.$TextInputUtil.cursorPosition.get(base);
     }
 
     public void setCursorPosition(int pos) {
-        ObfuscationReflectionHelper.setPrivateValue(TextInputUtil.class, base, pos, clsFieldNames.get(5));
+        ObfuscatedField.$TextInputUtil.cursorPosition.set(base, pos);
     }
 
     @Override
@@ -85,11 +71,11 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
     }
 
     private int getCursorPosition2() {
-        return (int) ObfuscationReflectionHelper.getPrivateValue(TextInputUtil.class, base, clsFieldNames.get(6));
+        return ObfuscatedField.$TextInputUtil.cursorPosition2.get(base);
     }
 
-    private void setCursorPosition2(int n) {
-        ObfuscationReflectionHelper.setPrivateValue(TextInputUtil.class, base, n, clsFieldNames.get(6));
+    private void setCursorPosition2(int pos) {
+        ObfuscatedField.$TextInputUtil.cursorPosition2.set(base, pos);
     }
 
     @Override
@@ -99,7 +85,7 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
 
     @Override
     public boolean setText(String str) {
-        if (getFontRenderer().getStringWidth(str) <= getTextMaxLength()) {
+        if (getFontRenderer().getStringWidth(str) <= getMaxStringLength()) {
             getConsumer().accept(str);
             return true;
         }
@@ -116,23 +102,20 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
         } else {
             res = str + s;
         }
-        if (setText(res)) {
+        if (setText(res) && getText().length() == res.length()) {
             setCursorPosition(cursorPosition + 1);
             setCursorPosition2(cursorPosition + 1);
         }
     }
 
     @Override
-    public void modifyText(String str) {
-        int cursorPosition = getCursorPosition();
-        setCursorPosition(cursorPosition - 1);
-        deleteFromCursor(1);
-        writeText(str);
-    }
-
-    @Override
     public void modifyText(char ch) {
-        modifyText(String.valueOf(Character.toChars(ch)));
+        int cursorPosition = getCursorPosition();
+        char arr[] = getText().toCharArray();
+        if (cursorPosition > 0 && cursorPosition <= arr.length) {
+            arr[cursorPosition - 1] = ch;
+            setText(String.valueOf(arr));
+        }
     }
 }
 

@@ -6,7 +6,7 @@
 * [홈페이지](https://github.com/sokcuri/NaraeChat)
 * [다운로드](https://github.com/sokcuri/NaraeChat/releases)
 * [업데이트 기록](CHANGELOG.md)
-* 버전: 1.14.4-0.4.0 (2019-08-29)
+* 버전: 1.14.4-0.5.0 (2019-08-29)
   * 마인크래프트 : 1.14.4
   * 포지 : 1.14.4-28.0.55
 * [라이센스 : LGPL 3.0](LICENSE.txt)

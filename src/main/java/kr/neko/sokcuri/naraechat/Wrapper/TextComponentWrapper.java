@@ -12,6 +12,5 @@ public interface TextComponentWrapper {
 
     void writeText(String str);
 
-    void modifyText(String str);
     void modifyText(char str);
 }
