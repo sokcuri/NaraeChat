@@ -5,7 +5,7 @@
 * 만든이: 소쿠릿 (https://twitter.com/sokcuri)
 * 홈페이지: https://github.com/sokcuri/naraechat
 * 다운로드: https://github.com/sokcuri/NaraeChat/releases
-* 버전: 1.14.4-0.3.0 (2019-08-29)
+* 버전: 1.14.4-0.4.0 (2019-08-29)
   * 마인크래프트 : 1.14.4
   * 포지 : 1.14.4-28.0.55
 * 라이센스 : LGPL 3.0
