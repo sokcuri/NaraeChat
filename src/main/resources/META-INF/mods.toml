@@ -3,7 +3,7 @@ loaderVersion="[28,)"
 issueTrackerURL="https://github.com/sokcuri/naraechat/issues"
 [[mods]]
 modId="naraechat"
-version="1.14.4-0.2.0"
+version="${file.jarVersion}"
 displayName="Narae Chat"
 updateJSONURL="https://raw.githubusercontent.com/sokcuri/naraechat/master/data/update.json"
 displayURL="https://github.com/sokcuri/naraechat"
