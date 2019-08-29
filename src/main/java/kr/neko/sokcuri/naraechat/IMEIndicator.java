@@ -47,8 +47,6 @@ public class IMEIndicator {
 
         boolean enableBackgroundDrawing = wrapper.getEnableBackgroundDrawing();
         boolean isEnabled = wrapper.isEnabled();
-        int lineScrollOffset = wrapper.getLineScrollOffset();
-        int selectionEnd = wrapper.getSelectionEnd();
 
         int width = wrapper.getWidth();
         int height = wrapper.getHeight();
@@ -63,6 +61,7 @@ public class IMEIndicator {
         int y = enableBackgroundDrawing ? wrapper.getY() + (height - 8) / 2 : wrapper.getY();
 
         String text = wrapper.getText();
+
         float indicatorX = x;
         String indicatorFirst = layout.getIndicatorText();
         String indicatorLast = String.format("[%d]", text.length());
