@@ -36,7 +36,7 @@ public class IMEIndicator {
     }
 
     public void drawIMEIndicator(KeyboardLayout layout) {
-        TextComponentWrapper comp = Utils.getTextComponent();
+        TextComponentWrapper comp = NaraeUtils.getTextComponent();
 
         if (!(comp instanceof TextFieldWidgetWrapper)) {
             return;

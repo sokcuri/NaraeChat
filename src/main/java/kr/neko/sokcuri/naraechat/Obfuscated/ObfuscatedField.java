@@ -1,4 +1,4 @@
-package kr.neko.sokcuri.naraechat;
+package kr.neko.sokcuri.naraechat.Obfuscated;
 
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;

@@ -1,7 +1,7 @@
 package kr.neko.sokcuri.naraechat.Keyboard;
 
 import kr.neko.sokcuri.naraechat.IMEIndicator;
-import kr.neko.sokcuri.naraechat.Utils;
+import kr.neko.sokcuri.naraechat.NaraeUtils;
 import kr.neko.sokcuri.naraechat.Wrapper.TextComponentWrapper;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.TickEvent;
@@ -44,7 +44,7 @@ public class QwertyLayout implements KeyboardLayout {
 
     @Override
     public void renderTick(TickEvent.RenderTickEvent event) {
-        TextComponentWrapper comp = Utils.getTextComponent();
+        TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return;
 
         IMEIndicator.Instance.drawIMEIndicator(this);

@@ -1,8 +1,8 @@
 package kr.neko.sokcuri.naraechat.Keyboard;
 
-import kr.neko.sokcuri.naraechat.HangulDefinition;
+import kr.neko.sokcuri.naraechat.HangulProcessor;
 import kr.neko.sokcuri.naraechat.IMEIndicator;
-import kr.neko.sokcuri.naraechat.Utils;
+import kr.neko.sokcuri.naraechat.NaraeUtils;
 import kr.neko.sokcuri.naraechat.Wrapper.TextComponentWrapper;
 import kr.neko.sokcuri.naraechat.Wrapper.TextFieldWidgetWrapper;
 import net.minecraft.client.Minecraft;
@@ -63,7 +63,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
     }
 
     boolean onBackspaceKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
-        TextComponentWrapper comp = Utils.getTextComponent();
+        TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return false;
 
         int cursorPosition = comp.getCursorPosition();
@@ -73,7 +73,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
 
         char ch = text.toCharArray()[cursorPosition - 1];
 
-        if (HangulDefinition.isHangulSyllables(ch)) {
+        if (HangulProcessor.isHangulSyllables(ch)) {
             int code = ch - 0xAC00;
             int cho = code / (21 * 28);
             int jung = (code % (21 * 28)) / 28;
@@ -86,14 +86,14 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
                 } else {
                     jong = 0;
                 }
-                char c = HangulDefinition.synthesizeHangulCharacter(cho, jung, jong);
+                char c = HangulProcessor.synthesizeHangulCharacter(cho, jung, jong);
                 comp.modifyText(c);
                 return true;
             } else {
                 char[] ch_arr = jungsung_ref_table.get(jung).toCharArray();
                 if (ch_arr.length == 2) {
                     jung = jungsung_table.indexOf(ch_arr[0]);
-                    char c = HangulDefinition.synthesizeHangulCharacter(cho, jung, 0);
+                    char c = HangulProcessor.synthesizeHangulCharacter(cho, jung, 0);
                     comp.modifyText(c);
                     return true;
                 } else {
@@ -102,7 +102,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
                     return true;
                 }
             }
-        } else if (HangulDefinition.isHangulCharacter(ch)) {
+        } else if (HangulProcessor.isHangulCharacter(ch)) {
             assemblePosition = -1;
             return false;
         }
@@ -110,7 +110,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
     }
 
     boolean onHangulCharTyped(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
-        TextComponentWrapper comp = Utils.getTextComponent();
+        TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return false;
 
         int codePoint = event.getCodePoint();
@@ -129,7 +129,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
         char curr = layout.toCharArray()[idx];
 
         if (cursorPosition == 0) {
-            if (!HangulDefinition.isHangulCharacter(curr)) return false;
+            if (!HangulProcessor.isHangulCharacter(curr)) return false;
 
             comp.writeText(String.valueOf(curr));
             assemblePosition = comp.getCursorPosition();
@@ -137,49 +137,49 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
         else if (cursorPosition == assemblePosition) {
 
             // 자음 + 모음
-            if (HangulDefinition.isJaeum(prev) && HangulDefinition.isMoeum(curr)) {
+            if (HangulProcessor.isJaeum(prev) && HangulProcessor.isMoeum(curr)) {
                 int cho = chosung_table.indexOf(prev);
                 int jung = jungsung_table.indexOf(curr);
-                char c = HangulDefinition.synthesizeHangulCharacter(cho, jung, 0);
+                char c = HangulProcessor.synthesizeHangulCharacter(cho, jung, 0);
                 comp.modifyText(c);
                 assemblePosition = comp.getCursorPosition();
                 return true;
             }
 
-            if (HangulDefinition.isHangulSyllables(prev)) {
+            if (HangulProcessor.isHangulSyllables(prev)) {
                 int code = prev - 0xAC00;
                 int cho = code / (21 * 28);
                 int jung = (code % (21 * 28)) / 28;
                 int jong = (code % (21 * 28)) % 28;
 
                 // 중성 합성 (ㅘ, ㅙ)..
-                if (jong == 0 && HangulDefinition.isJungsung(prev, curr)) {
-                    jung = HangulDefinition.getJungsung(prev, curr);
-                    char c = HangulDefinition.synthesizeHangulCharacter(cho, jung, 0);
+                if (jong == 0 && HangulProcessor.isJungsung(prev, curr)) {
+                    jung = HangulProcessor.getJungsung(prev, curr);
+                    char c = HangulProcessor.synthesizeHangulCharacter(cho, jung, 0);
                     comp.modifyText(c);
                     assemblePosition = comp.getCursorPosition();
                     return true;
                 }
 
                 // 종성 추가
-                if (jong == 0 && HangulDefinition.isJongsung(curr)) {
-                    char c = HangulDefinition.synthesizeHangulCharacter(cho, jung, HangulDefinition.getJongsung(curr));
+                if (jong == 0 && HangulProcessor.isJongsung(curr)) {
+                    char c = HangulProcessor.synthesizeHangulCharacter(cho, jung, HangulProcessor.getJongsung(curr));
                     comp.modifyText(c);
                     assemblePosition = comp.getCursorPosition();
                     return true;
                 }
 
                 // 종성 받침 추가
-                if (jong != 0 && HangulDefinition.isJongsung(prev, curr)) {
-                    jong = HangulDefinition.getJongsung(prev, curr);
-                    char c = HangulDefinition.synthesizeHangulCharacter(cho, jung, jong);
+                if (jong != 0 && HangulProcessor.isJongsung(prev, curr)) {
+                    jong = HangulProcessor.getJongsung(prev, curr);
+                    char c = HangulProcessor.synthesizeHangulCharacter(cho, jung, jong);
                     comp.modifyText(c);
                     assemblePosition = comp.getCursorPosition();
                     return true;
                 }
 
                 // 종성에서 받침 하나 빼고 글자 만들기
-                if (jong != 0 && HangulDefinition.isJungsung(curr)) {
+                if (jong != 0 && HangulProcessor.isJungsung(curr)) {
                     char[] tbl = jongsung_ref_table.get(jong).toCharArray();
                     int newCho = 0;
                     if (tbl.length == 2) {
@@ -190,12 +190,12 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
                         jong = 0;
                     }
 
-                    char c = HangulDefinition.synthesizeHangulCharacter(cho, jung, jong);
+                    char c = HangulProcessor.synthesizeHangulCharacter(cho, jung, jong);
                     comp.modifyText(c);
 
                     cho = newCho;
                     jung = jungsung_table.indexOf(curr);
-                    code = HangulDefinition.synthesizeHangulCharacter(cho, jung, 0);
+                    code = HangulProcessor.synthesizeHangulCharacter(cho, jung, 0);
                     comp.writeText(String.valueOf(Character.toChars(code)));
                     assemblePosition = comp.getCursorPosition();
                     return true;
@@ -209,7 +209,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
     }
 
     public void typedTextField(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
-        TextComponentWrapper comp = Utils.getTextComponent();
+        TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return;
 
         char qwertyChar = event.getCodePoint();
@@ -224,9 +224,9 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
         char curr = layout.toCharArray()[qwertyIndex];
         int cursorPosition = comp.getCursorPosition();
 
-        if (cursorPosition == 0 || !HangulDefinition.isHangulCharacter(curr) || !onHangulCharTyped(event)) {
+        if (cursorPosition == 0 || !HangulProcessor.isHangulCharacter(curr) || !onHangulCharTyped(event)) {
             comp.writeText(String.valueOf(curr));
-            assemblePosition = HangulDefinition.isHangulCharacter((curr)) ? comp.getCursorPosition() : -1;
+            assemblePosition = HangulProcessor.isHangulCharacter((curr)) ? comp.getCursorPosition() : -1;
         }
     }
 
@@ -243,7 +243,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
     public void onKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
         boolean isCanceled = false;
 
-        TextComponentWrapper comp = Utils.getTextComponent();
+        TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return;
 
         switch(event.getKeyCode()) {
@@ -350,7 +350,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
     }
 
     private void renderEndPhaseTick(TickEvent.RenderTickEvent event) {
-        TextComponentWrapper comp = Utils.getTextComponent();
+        TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return;
 
         drawCharAssembleBox(comp);

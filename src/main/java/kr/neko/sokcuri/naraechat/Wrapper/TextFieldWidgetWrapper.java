@@ -1,7 +1,7 @@
 package kr.neko.sokcuri.naraechat.Wrapper;
 
-import kr.neko.sokcuri.naraechat.ObfuscatedField;
-import kr.neko.sokcuri.naraechat.ObfuscatedMethod;
+import kr.neko.sokcuri.naraechat.Obfuscated.ObfuscatedField;
+import kr.neko.sokcuri.naraechat.Obfuscated.ObfuscatedMethod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;

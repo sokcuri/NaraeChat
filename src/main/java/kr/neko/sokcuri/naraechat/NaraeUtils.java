@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Utils {
+public class NaraeUtils {
     public static HashMap<String, ArrayList<String>> inputUtilFieldMap = new HashMap<>();
     public static HashMap<String, ArrayList<String>> textFieldWidgetFieldMap = new HashMap<>();
 
@@ -84,38 +84,5 @@ public class Utils {
             }
         }
         return null;
-//
-//
-//
-//
-//        IGuiEventListener focusedScreen = mc.currentScreen.getFocused();
-//        if (focusedScreen != null) {
-//            if (focusedScreen.getClass().getName() == "net.minecraft.client.gui.widget.TextFieldWidget") {
-//                return (TextFieldWidget) focusedScreen;
-//            }
-//        }
-//
-//        Object o = mc.currentScreen;
-//        for (Field field : o.getClass().getDeclaredFields()) {
-//            if (field.getType().getName() == "net.minecraft.client.gui.widget.TextFieldWidget") {
-//
-//                TextFieldWidget widget = null;
-//                try {
-//                    widget = (TextFieldWidget) FieldUtils.readField(o, field.getName(), true);
-//                } catch (IllegalAccessException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                if (widget != null) {
-//                    TextFieldWidgetWrapper wrapper = new TextFieldWidgetWrapper(widget);
-//                    if (wrapper.getCanLoseFocus() != false) {
-//                        wrapper.setFocused(true);
-//                    }
-//                }
-//                break;
-//            }
-//        }
-//
-//        return null;
     }
 }

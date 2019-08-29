@@ -33,7 +33,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("naraechat")
-public class Main
+public class NaraeMain
 {
     private static KeyboardLayout keyboard = Hangul_Set_2_Layout.getInstance();
     private static List<KeyboardLayout> keyboardArray = new ArrayList<>();
@@ -57,7 +57,7 @@ public class Main
         }
     }
 
-    public Main() {
+    public NaraeMain() {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the doClientStuff method for modloading
