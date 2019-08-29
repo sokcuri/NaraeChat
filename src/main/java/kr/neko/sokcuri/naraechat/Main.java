@@ -96,12 +96,12 @@ public class Main
         }
 
         // 103 키보드 문제 수정. 한글(0x1F2)/한자(0x1F1) 키를 강재로 리매핑한다
-        // Windows 화상 키보드 한영키(0xF2) 반영
-        if (keyCode == -1 && scanCode == 0x1F2 || keyCode == -1 && scanCode == 0x1F1 || keyCode == -1 && scanCode == 0xF2) {
+        // Windows 화상 키보드 한영키(0xF2)/한자키(0xF1) 반영
+        if (keyCode == -1 && scanCode == 0x1F2 || keyCode == -1 && scanCode == 0x1F1 || keyCode == -1 && scanCode == 0xF2 || keyCode == -1 && scanCode == 0xF1) {
             if (scanCode == 0x1F2 || scanCode == 0xF2) {
                 keyCode = GLFW_KEY_RIGHT_ALT;
                 scanCode = glfwGetKeyScancode(keyCode);
-            } else if (scanCode == 0x1F1) {
+            } else if (scanCode == 0x1F1 || scanCode == 0xF1) {
                 keyCode = GLFW_KEY_RIGHT_CONTROL;
                 scanCode = glfwGetKeyScancode(keyCode);
             }
