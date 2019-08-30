@@ -33,7 +33,6 @@ import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod("naraechat")
 @OnlyIn(Dist.CLIENT)
 public class NaraeMain
