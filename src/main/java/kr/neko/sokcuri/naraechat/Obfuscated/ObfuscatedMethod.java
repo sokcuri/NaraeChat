@@ -1,9 +1,14 @@
 package kr.neko.sokcuri.naraechat.Obfuscated;
 
+import com.sun.javafx.font.FontResource;
+import net.minecraft.client.gui.fonts.FontResourceManager;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
+import net.minecraft.profiler.IProfiler;
+import net.minecraft.resources.IResourceManager;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 public final class ObfuscatedMethod<O, R> {
 
@@ -20,6 +25,13 @@ public final class ObfuscatedMethod<O, R> {
 
         static {
             updateCreativeSearch        = new ObfuscatedMethod("updateCreativeSearch", "func_147053_i", CreativeScreen.class, void.class);
+        }
+    }
+
+    public static class $FontResourceManager {
+        public static final ObfuscatedMethod<FontResourceManager, Void> apply;
+        static {
+            apply                       = new ObfuscatedMethod("apply", "func_212853_a_", FontResourceManager.class, void.class, Map.class, IResourceManager.class, IProfiler.class);
         }
     }
 

@@ -1,5 +1,6 @@
 {
   "key.naraechat.category": "나래챗 키 설정",
   "key.naraechat.ime_switch.desc": "한/영 전환키",
-  "key.naraechat.hanja.desc": "한자 변환키"
+  "key.naraechat.hanja.desc": "한자 변환키",
+  "options.naraechat.font": "폰트"
 }

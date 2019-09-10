@@ -14,7 +14,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
 compileJava.options.encoding = 'UTF-8'
-version = '1.14.4-0.5.0'
+version = '1.14.4-0.6.0'
 group = 'kr.neko.sokcuri.naraechat' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'naraechat'
 
@@ -85,7 +85,6 @@ minecraft {
         }
     }
 }
-
 dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
@@ -94,6 +93,7 @@ dependencies {
     compile 'net.java.dev.jna:jna:4.1.0'
     compile 'net.java.dev.jna:jna-platform:4.1.0'
     compile 'org.apache.commons:commons-text:1.7'
+    compile 'org.apache.pdfbox:fontbox:2.0.2'
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
@@ -114,7 +114,6 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
 }
-
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
@@ -129,7 +128,6 @@ jar {
         ])
     }
 }
-
 // Example configuration to allow publishing using the maven-publish task
 // we define a custom artifact that is sourced from the reobfJar output task
 // and then declare that to be published
