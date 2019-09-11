@@ -1,6 +1,5 @@
 package kr.neko.sokcuri.naraechat.Config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import org.ini4j.Wini;
 
@@ -13,16 +12,18 @@ public final class ConfigHelper {
     static {
         try {
             File file = new File("naraechat.ini");
-            if(!file.exists())
-            {
+            if (!file.exists()) {
                 file.createNewFile();
+                ini = new Wini(file);
                 setFontFamily("맑은 고딕");
                 setFontSize(12.0f);
                 setOversample(4.0f);
                 setShiftX(-0.3f);
                 setShiftY(0.3f);
+                ini.load(file);
+            } else {
+                ini = new Wini(file);
             }
-            ini = new Wini(file);
         } catch (IOException e) {
             e.printStackTrace();
         }

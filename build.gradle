@@ -6,15 +6,28 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath "com.github.jengelman.gradle.plugins:shadow:4.0.0"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+apply plugin: 'com.github.johnrengelman.shadow'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 compileJava.options.encoding = 'UTF-8'
 version = '1.14.4-0.6.0'
 group = 'kr.neko.sokcuri.naraechat' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'naraechat'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -37,10 +50,29 @@ minecraft {
         }
     }
 }
+
 dependencies {
     minecraft 'net.minecraftforge:forge:1.14.4-28.0.55'
     compile 'net.java.dev.jna:jna:4.1.0'
     compile 'net.java.dev.jna:jna-platform:4.1.0'
     compile 'org.apache.commons:commons-text:1.7'
-    compile 'org.apache.pdfbox:fontbox:2.0.2'
+    embed 'org.apache.pdfbox:fontbox:2.0.16'
+    embed group: 'org.apache.pdfbox', name: 'fontbox', version: '2.0.16'
+    embed 'org.ini4j:ini4j:0.5.1'
+    embed group: 'org.ini4j', name: 'ini4j', version: '0.5.1'
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "naraechat",
+                "Specification-Vendor": "naraechat",
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor" :"naraechat",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+    from configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
 }
