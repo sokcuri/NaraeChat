@@ -1,10 +1,9 @@
 package kr.neko.sokcuri.naraechat.Obfuscated;
 
-import com.sun.javafx.font.FontResource;
-import net.minecraft.client.gui.fonts.FontResourceManager;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResourceManager;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.lang.reflect.InvocationTargetException;
@@ -28,10 +27,21 @@ public final class ObfuscatedMethod<O, R> {
         }
     }
 
-    public static class $FontResourceManager {
-        public static final ObfuscatedMethod<FontResourceManager, Void> apply;
+    public static class $Widget {
+        public static final ObfuscatedMethod<Widget, Integer> getWidth;
+        public static final ObfuscatedMethod<Widget, Boolean> isFocused;
+
         static {
-            apply                       = new ObfuscatedMethod("apply", "func_212853_a_", FontResourceManager.class, void.class, Map.class, IResourceManager.class, IProfiler.class);
+            getWidth        = new ObfuscatedMethod("getWidth", "func_230998_h_", Widget.class, Integer.class);
+            isFocused       = new ObfuscatedMethod("isFocused", "func_230999_j_", Widget.class, Boolean.class);
+        }
+    }
+
+    public static class $FontRenderer {
+        public static final ObfuscatedMethod<FontRenderer, Integer> getStringWidth;
+
+        static {
+            getStringWidth        = new ObfuscatedMethod("getStringWidth", "func_78256_a", FontRenderer.class, Integer.class, new Class<?>[] { String.class });
         }
     }
 
@@ -65,7 +75,7 @@ public final class ObfuscatedMethod<O, R> {
 
     public R invoke(O obj, Object... args) {
         try {
-            return (R)ObfuscationReflectionHelper.findMethod(obj.getClass(), isDeobf ? deobfName : obfName).invoke(obj, args);
+            return (R)ObfuscationReflectionHelper.findMethod(owner, isDeobf ? deobfName : obfName, parameters).invoke(obj, args);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

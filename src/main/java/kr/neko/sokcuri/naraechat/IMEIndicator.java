@@ -1,5 +1,6 @@
 package kr.neko.sokcuri.naraechat;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import kr.neko.sokcuri.naraechat.Keyboard.KeyboardLayout;
 import kr.neko.sokcuri.naraechat.Wrapper.TextComponentWrapper;
@@ -101,8 +102,8 @@ public class IMEIndicator {
         }
 
         drawIndicatorBox(indicatorX - indicatorMargin, y - height - indicatorMargin, indicatorX + indicatorWidth + indicatorMargin, y - height + indicatorHeight + indicatorMargin);
-        fontRenderer.drawString(indicatorFirst, indicatorX, y - height, layout.getIndicatorColor().getRGB());
-        fontRenderer.drawString(indicatorLast, indicatorX + indicatorFirstWidth, y - height, new Color(0xFF, 0xFF, 0xFF).getRGB());
+        fontRenderer.drawString(new MatrixStack(), indicatorFirst, indicatorX, y - height, layout.getIndicatorColor().getRGB());
+        fontRenderer.drawString(new MatrixStack(), indicatorLast, indicatorX + indicatorFirstWidth, y - height, new Color(0xFF, 0xFF, 0xFF).getRGB());
     }
 
     void drawIndicatorBox(float x, float y, float cx, float cy) {

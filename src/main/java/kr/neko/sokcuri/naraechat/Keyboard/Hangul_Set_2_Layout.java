@@ -3,6 +3,7 @@ package kr.neko.sokcuri.naraechat.Keyboard;
 import kr.neko.sokcuri.naraechat.HangulProcessor;
 import kr.neko.sokcuri.naraechat.IMEIndicator;
 import kr.neko.sokcuri.naraechat.NaraeUtils;
+import kr.neko.sokcuri.naraechat.Obfuscated.*;
 import kr.neko.sokcuri.naraechat.Wrapper.TextComponentWrapper;
 import kr.neko.sokcuri.naraechat.Wrapper.TextFieldWidgetWrapper;
 import net.minecraft.client.Minecraft;
@@ -326,7 +327,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
         int width = wrapper.getWidth();
         int height = wrapper.getHeight();
 
-        String trimStr = fontRenderer.trimStringToWidth(wrapper.getText().substring(lineScrollOffset), adjustedWidth);
+        String trimStr = wrapper.getText().substring(lineScrollOffset);
 
         int x = enableBackgroundDrawing ? wrapper.getX() + 4 : wrapper.getX();
         int y = enableBackgroundDrawing ? wrapper.getY() + (height - 8) / 2 : wrapper.getY();
@@ -341,10 +342,9 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
         if (cursorPosition == 0) return;
         if (trimStr.length() == 0) return;
         if (specifiedOffset == 0 || specifiedOffset - 1 >= trimStr.length()) return;
-
-        int startX = x + fontRenderer.getStringWidth(trimStr.substring(0, specifiedOffset - 1));
+        int startX = x + ObfuscatedMethod.$FontRenderer.getStringWidth.invoke(fontRenderer, trimStr.substring(0, specifiedOffset - 1));
         int startY = y - 1;
-        int endX = x + fontRenderer.getStringWidth(trimStr.substring(0, specifiedOffset)) - 1;
+        int endX = x + ObfuscatedMethod.$FontRenderer.getStringWidth.invoke(fontRenderer, trimStr.substring(0, specifiedOffset)) - 1;
         int endY = y + 1 + 9;
         drawAssembleCharBox(startX, startY, endX, endY, x, width);
     }

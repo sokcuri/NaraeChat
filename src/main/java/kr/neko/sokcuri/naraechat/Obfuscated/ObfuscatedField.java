@@ -1,23 +1,12 @@
 package kr.neko.sokcuri.naraechat.Obfuscated;
 
-import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.fonts.Font;
-import net.minecraft.client.gui.fonts.FontResourceManager;
 import net.minecraft.client.gui.fonts.TextInputUtil;
-import net.minecraft.client.gui.fonts.providers.IGlyphProvider;
-import net.minecraft.client.gui.screen.LanguageScreen;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.resources.LanguageManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -70,49 +59,11 @@ public final class ObfuscatedField<O, T> {
         }
     }
 
-    public static class $FontResourceManager {
-        public static final ObfuscatedField<FontResourceManager, Boolean> forceUnicodeFont;
-        public static final ObfuscatedField<FontResourceManager, Map<ResourceLocation, FontRenderer>> fontRenderers;
-        public static final ObfuscatedField<FontResourceManager, TextureManager> textureManager;
-        public static final ObfuscatedField<FontResourceManager, Set> glyphProviders;
+    public static class $Widget {
+        public static final ObfuscatedField<Widget, Boolean> focused;
 
         static {
-            forceUnicodeFont            = new ObfuscatedField("forceUnicodeFont", "field_211826_d", FontResourceManager.class, Boolean.class);
-            fontRenderers               = new ObfuscatedField("fontRenderers", "field_211510_b", FontResourceManager.class, Map.class);
-            textureManager              = new ObfuscatedField("textureManager", "field_211511_c", FontResourceManager.class, TextureManager.class);
-            glyphProviders              = new ObfuscatedField("field_216888_c", "field_216888_c", FontResourceManager.class, Set.class);
-        }
-    }
-
-    public static class $FontRenderer {
-        public static final ObfuscatedField<FontRenderer, Boolean> forceUnicodeFont;
-        public static final ObfuscatedField<FontRenderer, TextureManager> textureManager;
-        public static final ObfuscatedField<FontRenderer, Font> font;
-
-        static {
-            font                        = new ObfuscatedField("font", "field_211127_e", FontRenderer.class, Font.class);
-            forceUnicodeFont            = new ObfuscatedField("forceUnicodeFont", "field_211826_d", FontRenderer.class, Boolean.class);
-            textureManager              = new ObfuscatedField("textureManager", "field_211511_c", FontRenderer.class, TextureManager.class);
-        }
-    }
-
-    public static class $LanguageScreen {
-        public static final ObfuscatedField<LanguageScreen, Screen> parentScreen;
-        public static final ObfuscatedField<LanguageScreen, GameSettings> game_settings_3;
-        public static final ObfuscatedField<LanguageScreen, LanguageManager> languageManager;
-
-        static {
-            parentScreen                = new ObfuscatedField("parentScreen", "field_146453_a", LanguageScreen.class, Screen.class);
-            game_settings_3             = new ObfuscatedField("game_settings_3", "field_146451_g", LanguageScreen.class, GameSettings.class);
-            languageManager             = new ObfuscatedField("languageManager", "field_146454_h", LanguageScreen.class, LanguageManager.class);
-        }
-    }
-
-    public static class $Font {
-        public static final ObfuscatedField<Font, List<IGlyphProvider>> glyphProviders;
-
-        static {
-            glyphProviders              = new ObfuscatedField("glyphProviders", "field_211194_f", Font.class, List.class);
+            focused                     = new ObfuscatedField("focused", "field_230686_c_", Widget.class, boolean.class);
         }
     }
 
@@ -140,10 +91,10 @@ public final class ObfuscatedField<O, T> {
     }
 
     public T get(O obj) {
-        return (T)ObfuscationReflectionHelper.getPrivateValue((Class<O>)obj.getClass(), obj, isDeobf ? deobfName : obfName);
+        return (T)ObfuscationReflectionHelper.getPrivateValue(owner, obj, isDeobf ? deobfName : obfName);
     }
 
     public void set(O obj, T value) {
-        ObfuscationReflectionHelper.setPrivateValue((Class<O>)obj.getClass(), obj, value, isDeobf ? deobfName : obfName);
+        ObfuscationReflectionHelper.setPrivateValue(owner, obj, value, isDeobf ? deobfName : obfName);
     }
 }
