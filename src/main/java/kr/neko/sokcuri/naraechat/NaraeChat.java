@@ -136,7 +136,7 @@ public final class NaraeChat
     }
 
     @SubscribeEvent
-    public void proxyHangulSpecificKey(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    public void onSpecialKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
 
         int keyCode = event.getKeyCode();
         int scanCode = event.getScanCode();
@@ -167,17 +167,19 @@ public final class NaraeChat
             }
 
             event.setCanceled(true);
-        }
 
-        // 키 바인딩 설정창일 때 우측 CONTROL이나 ALT가 단독으로만 동작하게 만들기
-        if (mc.currentScreen instanceof ControlsScreen) {
-            ControlsScreen controlsScreen = (ControlsScreen)mc.currentScreen;
-            if (keyCode == GLFW_KEY_RIGHT_CONTROL || keyCode == GLFW_KEY_RIGHT_ALT) {
-                controlsScreen.keyPressed(keyCode, scanCode, glfwModifier);
-                controlsScreen.buttonId = null;
-                event.setCanceled(true);
-                return;
+            int glfwModifier = 0;
+            if (KeyModifier.getActiveModifier() == KeyModifier.SHIFT) {
+                glfwModifier = GLFW_MOD_SHIFT;
+            } else if (KeyModifier.getActiveModifier() == KeyModifier.CONTROL) {
+                glfwModifier = GLFW_MOD_CONTROL;
+            } else if (KeyModifier.getActiveModifier() == KeyModifier.ALT) {
+                glfwModifier = GLFW_MOD_ALT;
             }
+
+            Minecraft mc = Minecraft.getInstance();
+            mc.currentScreen.keyPressed(keyCode, scanCode, glfwModifier);
+            mc.currentScreen.keyReleased(keyCode, scanCode, glfwModifier);
         }
 
         KeyModifier modifier = KeyModifier.getActiveModifier();
