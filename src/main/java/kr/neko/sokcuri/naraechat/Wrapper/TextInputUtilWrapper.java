@@ -6,6 +6,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.fonts.TextInputUtil;
 
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class TextInputUtilWrapper implements TextComponentWrapper {
@@ -16,11 +17,11 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
     }
 
     public Minecraft getMinecraftInstance() {
-        return ObfuscatedField.$TextInputUtil.minecraft.get(base);
+        return Minecraft.getInstance();
     }
 
     public FontRenderer getFontRenderer() {
-        return ObfuscatedField.$TextInputUtil.fontRenderer.get(base);
+        return Minecraft.getInstance().fontRenderer;
     }
 
     public Supplier<String> getSupplier() {
@@ -31,8 +32,8 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
         return ObfuscatedField.$TextInputUtil.textConsumer.get(base);
     }
 
-    public int getMaxStringLength() {
-        return ObfuscatedField.$TextInputUtil.maxStringLength.get(base);
+    public Predicate<String> getPredicate() {
+        return ObfuscatedField.$TextInputUtil.textPredicate.get(base);
     }
 
     @Override
@@ -85,7 +86,7 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
 
     @Override
     public boolean setText(String str) {
-        if (getFontRenderer().getStringWidth(str) <= getMaxStringLength()) {
+        if (getPredicate().test(str)) {
             getConsumer().accept(str);
             return true;
         }
@@ -102,7 +103,10 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
         } else {
             res = str + s;
         }
-        if (setText(res) && getText().length() == res.length()) {
+
+        boolean textCommitted = setText(res);
+
+        if (textCommitted && getText().length() == res.length()) {
             setCursorPosition(cursorPosition + 1);
             setCursorPosition2(cursorPosition + 1);
         }
