@@ -111,10 +111,22 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
     }
 
     boolean onHangulCharTyped(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
+        boolean shift = (event.getModifiers() & 0x01) == 1;
+
         TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return false;
 
         int codePoint = event.getCodePoint();
+
+        if (codePoint >= 65 && codePoint <= 90) {
+            codePoint += 32;
+        }
+
+        if (codePoint >= 97 && codePoint <= 122) {
+            if (shift) {
+                codePoint -= 32;
+            }
+        }
 
         int idx = QwertyLayout.getInstance().getLayoutString().indexOf(codePoint);
         // System.out.println(String.format("idx: %d", idx));
@@ -310,43 +322,44 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
     }
 
     private void drawCharAssembleBox(TextComponentWrapper comp) {
-        if (!(comp instanceof TextFieldWidgetWrapper)) {
+        if (comp instanceof TextFieldWidgetWrapper) {
+            TextFieldWidgetWrapper wrapper = (TextFieldWidgetWrapper) comp;
+            FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+
+            boolean enableBackgroundDrawing = wrapper.getEnableBackgroundDrawing();
+            boolean isEnabled = wrapper.isEnabled();
+            int adjustedWidth = wrapper.getAdjustedWidth();
+            int cursorPosition = wrapper.getCursorPosition();
+            int lineScrollOffset = wrapper.getLineScrollOffset();
+            int selectionEnd = wrapper.getSelectionEnd();
+
+            int width = wrapper.getWidth();
+            int height = wrapper.getHeight();
+
+            String trimStr = wrapper.getText().substring(lineScrollOffset);
+
+            int x = enableBackgroundDrawing ? wrapper.getX() + 4 : wrapper.getX();
+            int y = enableBackgroundDrawing ? wrapper.getY() + (height - 8) / 2 : wrapper.getY();
+            int specifiedOffset = selectionEnd - lineScrollOffset;
+
+            if (!isEnabled || !wrapper.isFocused() || assemblePosition != cursorPosition) {
+                assemblePosition = -1;
+            }
+
+            if (assemblePosition == -1) return;
+            if (trimStr.isEmpty()) return;
+            if (cursorPosition == 0) return;
+            if (trimStr.length() == 0) return;
+            if (specifiedOffset == 0 || specifiedOffset - 1 >= trimStr.length()) return;
+            int startX = x + ObfuscatedMethod.$FontRenderer.getStringWidth.invoke(fontRenderer, trimStr.substring(0, specifiedOffset - 1));
+            int startY = y - 1;
+            int endX = x + ObfuscatedMethod.$FontRenderer.getStringWidth.invoke(fontRenderer, trimStr.substring(0, specifiedOffset)) - 1;
+            int endY = y + 1 + 9;
+            drawAssembleCharBox(startX, startY, endX, endY, x, width);
+        } else {
             return;
         }
 
-        TextFieldWidgetWrapper wrapper = (TextFieldWidgetWrapper)comp;
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-
-        boolean enableBackgroundDrawing = wrapper.getEnableBackgroundDrawing();
-        boolean isEnabled = wrapper.isEnabled();
-        int adjustedWidth = wrapper.getAdjustedWidth();
-        int cursorPosition = wrapper.getCursorPosition();
-        int lineScrollOffset = wrapper.getLineScrollOffset();
-        int selectionEnd = wrapper.getSelectionEnd();
-
-        int width = wrapper.getWidth();
-        int height = wrapper.getHeight();
-
-        String trimStr = wrapper.getText().substring(lineScrollOffset);
-
-        int x = enableBackgroundDrawing ? wrapper.getX() + 4 : wrapper.getX();
-        int y = enableBackgroundDrawing ? wrapper.getY() + (height - 8) / 2 : wrapper.getY();
-        int specifiedOffset = selectionEnd - lineScrollOffset;
-
-        if (!isEnabled || !wrapper.isFocused() || assemblePosition != cursorPosition) {
-            assemblePosition = -1;
-        }
-
-        if (assemblePosition == -1) return;
-        if (trimStr.isEmpty()) return;
-        if (cursorPosition == 0) return;
-        if (trimStr.length() == 0) return;
-        if (specifiedOffset == 0 || specifiedOffset - 1 >= trimStr.length()) return;
-        int startX = x + ObfuscatedMethod.$FontRenderer.getStringWidth.invoke(fontRenderer, trimStr.substring(0, specifiedOffset - 1));
-        int startY = y - 1;
-        int endX = x + ObfuscatedMethod.$FontRenderer.getStringWidth.invoke(fontRenderer, trimStr.substring(0, specifiedOffset)) - 1;
-        int endY = y + 1 + 9;
-        drawAssembleCharBox(startX, startY, endX, endY, x, width);
     }
 
     private void renderEndPhaseTick(TickEvent.RenderTickEvent event) {
