@@ -19,6 +19,6 @@ description="나래챗은 마인크래프트 한글 입력을 도와줍니다. b
 [[dependencies.naraechat]]
     modId="minecraft"
     mandatory=true
-    versionRange="1.16"
+    versionRange="[1.16.1]"
     ordering="NONE"
     side="BOTH"
