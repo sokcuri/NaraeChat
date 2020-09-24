@@ -67,9 +67,7 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
         return base.y;
     }
 
-    public int getHeight() {
-        return base.getHeight();
-    }
+    public int getHeight() { return base.getHeightRealms(); }
 
     public int getAdjustedWidth() {
         return base.getAdjustedWidth();
