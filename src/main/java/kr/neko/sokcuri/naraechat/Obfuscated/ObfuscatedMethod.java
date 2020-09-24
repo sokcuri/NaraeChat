@@ -27,24 +27,6 @@ public final class ObfuscatedMethod<O, R> {
         }
     }
 
-    public static class $Widget {
-        public static final ObfuscatedMethod<Widget, Integer> getWidth;
-        public static final ObfuscatedMethod<Widget, Boolean> isFocused;
-
-        static {
-            getWidth        = new ObfuscatedMethod("getWidth", "func_230998_h_", Widget.class, Integer.class);
-            isFocused       = new ObfuscatedMethod("isFocused", "func_230999_j_", Widget.class, Boolean.class);
-        }
-    }
-
-    public static class $FontRenderer {
-        public static final ObfuscatedMethod<FontRenderer, Integer> getStringWidth;
-
-        static {
-            getStringWidth        = new ObfuscatedMethod("getStringWidth", "func_78256_a", FontRenderer.class, Integer.class, new Class<?>[] { String.class });
-        }
-    }
-
     public ObfuscatedMethod(String deobfName, String obfName, Class<O> owner, Class<R> retClass, Class<?>... parameters) {
         this.deobfName = deobfName;
         this.obfName = obfName;

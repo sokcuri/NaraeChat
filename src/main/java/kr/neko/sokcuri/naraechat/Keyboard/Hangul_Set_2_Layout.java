@@ -351,9 +351,9 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
             if (cursorPosition == 0) return;
             if (trimStr.length() == 0) return;
             if (specifiedOffset == 0 || specifiedOffset - 1 >= trimStr.length()) return;
-            int startX = x + ObfuscatedMethod.$FontRenderer.getStringWidth.invoke(fontRenderer, trimStr.substring(0, specifiedOffset - 1));
+            int startX = x + fontRenderer.getStringWidth(trimStr.substring(0, specifiedOffset - 1));
             int startY = y - 1;
-            int endX = x + ObfuscatedMethod.$FontRenderer.getStringWidth.invoke(fontRenderer, trimStr.substring(0, specifiedOffset)) - 1;
+            int endX = x + fontRenderer.getStringWidth(trimStr.substring(0, specifiedOffset)) - 1;
             int endY = y + 1 + 9;
             drawAssembleCharBox(startX, startY, endX, endY, x, width);
         } else {
