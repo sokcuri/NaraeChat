@@ -70,10 +70,6 @@ dependencies {
     compile 'net.java.dev.jna:jna:4.1.0'
     compile 'net.java.dev.jna:jna-platform:4.1.0'
     compile 'org.apache.commons:commons-text:1.7'
-    embed 'org.apache.pdfbox:fontbox:2.0.16'
-    embed group: 'org.apache.pdfbox', name: 'fontbox', version: '2.0.16'
-    embed 'org.ini4j:ini4j:0.5.1'
-    embed group: 'org.ini4j', name: 'ini4j', version: '0.5.1'
 }
 
 jar {
