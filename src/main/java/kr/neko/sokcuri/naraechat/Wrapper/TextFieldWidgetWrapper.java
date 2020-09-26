@@ -67,7 +67,9 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
         return base.y;
     }
 
-    public int getHeight() { return base.getHeightRealms(); }
+    public int getHeight() {
+        return base.getHeightRealms();
+    }
 
     public int getAdjustedWidth() {
         return base.getAdjustedWidth();
@@ -117,7 +119,7 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
     }
 
     public boolean getVisible() {
-        return this.getVisible();
+        return base.getVisible();
     }
 
     @Override
