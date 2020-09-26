@@ -12,6 +12,8 @@ import net.minecraft.client.gui.screen.ControlsScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,6 +35,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("naraechat")
+@OnlyIn(Dist.CLIENT)
 public final class NaraeChat
 {
     private static KeyboardLayout keyboard = Hangul_Set_2_Layout.getInstance();
