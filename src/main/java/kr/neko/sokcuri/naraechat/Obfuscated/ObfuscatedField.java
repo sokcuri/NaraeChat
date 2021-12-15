@@ -49,12 +49,12 @@ public final class ObfuscatedField<O, T> {
         public static final ObfuscatedField<TextInputUtil, Integer> cursorPosition2;
 
         static {
-            textSupplier                = new ObfuscatedField("textConsumer", "field_216902_c", TextInputUtil.class, Supplier.class);
-            textConsumer                = new ObfuscatedField("textSupplier", "field_216903_d", TextInputUtil.class, Consumer.class);
+            textSupplier                = new ObfuscatedField("textSupplier", "field_216902_c", TextInputUtil.class, Supplier.class);
+            textConsumer                = new ObfuscatedField("textConsumer", "field_216903_d", TextInputUtil.class, Consumer.class);
             textPredicate               = new ObfuscatedField("textPredicate", "field_238566_e_", TextInputUtil.class, Consumer.class);
             maxStringLength             = new ObfuscatedField("field_216906_g", "field_216906_g", TextInputUtil.class, int.class);
-            cursorPosition              = new ObfuscatedField("field_216905_f", "field_216905_f", TextInputUtil.class, int.class);
-            cursorPosition2             = new ObfuscatedField("field_216906_g", "field_216906_g", TextInputUtil.class, int.class);
+            cursorPosition              = new ObfuscatedField("endIndex", "field_216905_f", TextInputUtil.class, int.class);
+            cursorPosition2             = new ObfuscatedField("startIndex", "field_216906_g", TextInputUtil.class, int.class);
         }
     }
 
