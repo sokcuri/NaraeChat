@@ -3,15 +3,15 @@ package kr.neko.sokcuri.naraechat.Wrapper;
 import kr.neko.sokcuri.naraechat.Obfuscated.ObfuscatedField;
 import kr.neko.sokcuri.naraechat.Obfuscated.ObfuscatedMethod;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.CreativeScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 
 import java.util.function.Consumer;
 
 public class TextFieldWidgetWrapper implements TextComponentWrapper {
-    private final TextFieldWidget base;
+    private final EditBox base;
 
-    public TextFieldWidgetWrapper(TextFieldWidget widget) {
+    public TextFieldWidgetWrapper(EditBox widget) {
         this.base = widget;
     }
 
@@ -23,10 +23,10 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
 
     private void updateScreen() {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.currentScreen == null) return;
+        if (mc.screen == null) return;
 
-        if (mc.currentScreen instanceof CreativeScreen) {
-            CreativeScreen creativeScreen = (CreativeScreen)mc.currentScreen;
+        if (mc.screen instanceof CreativeModeInventoryScreen) {
+            CreativeModeInventoryScreen creativeScreen = (CreativeModeInventoryScreen)mc.screen;
             ObfuscatedMethod.$CreativeScreen.updateCreativeSearch.invoke(creativeScreen);
         }
     }
@@ -68,11 +68,11 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
     }
 
     public int getHeight() {
-        return base.getHeightRealms();
+        return base.getHeight();
     }
 
     public int getAdjustedWidth() {
-        return base.getAdjustedWidth();
+        return base.getInnerWidth();
     }
 
     public int getCursorPosition() {
@@ -89,11 +89,11 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
     }
 
     public int getNthWordFromCursor(int numWords) {
-        return base.getNthWordFromCursor(numWords);
+        return base.getWordPosition(numWords);
     }
 
     public String getSelectedText() {
-        return base.getSelectedText();
+        return base.getHighlighted();
     }
 
     public boolean getCanLoseFocus() {
@@ -104,22 +104,22 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
     }
 
     public String getText() {
-        return base.getText();
+        return base.getValue();
     }
 
     public boolean setText(String str) {
-        base.setText(str);
+        base.setValue(str);
         sendTextChanged(str);
         updateScreen();
         return true;
     }
 
     public void deleteFromCursor(int num) {
-        base.deleteFromCursor(num);
+        base.deleteChars(num);
     }
 
     public boolean getVisible() {
-        return base.getVisible();
+        return base.isVisible();
     }
 
     @Override
@@ -129,7 +129,7 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
 
     @Override
     public void writeText(String str) {
-        base.writeText(str);
+        base.insertText(str);
         sendTextChanged(str);
         updateScreen();
     }

@@ -1,7 +1,7 @@
 package kr.neko.sokcuri.naraechat.Obfuscated;
 
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -45,8 +45,8 @@ public class ReflectionFieldMap<T> {
         if (map.containsKey(className)) {
             for (ReflectionFieldInfo fieldInfo : map.get(className)) {
                 Object obj = ObfuscationReflectionHelper.getPrivateValue(fieldInfo.getOwnerClass(), owner, fieldInfo.getName());
-                if (obj instanceof TextFieldWidget) {
-                    if (((TextFieldWidget)obj).isFocused()) {
+                if (obj instanceof EditBox) {
+                    if (((EditBox)obj).isFocused()) {
                         return (T)obj;
                     }
                 } else {
