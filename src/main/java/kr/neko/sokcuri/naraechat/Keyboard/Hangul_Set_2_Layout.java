@@ -13,7 +13,7 @@ import kr.neko.sokcuri.naraechat.Wrapper.TextComponentWrapper;
 import kr.neko.sokcuri.naraechat.Wrapper.TextFieldWidgetWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -65,7 +65,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
         return QwertyLayout.getInstance().getLayoutString().indexOf(ch);
     }
 
-    boolean onBackspaceKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    boolean onBackspaceKeyPressed(ScreenEvent.KeyboardKeyPressedEvent.Pre event) {
         TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return false;
 
@@ -112,7 +112,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
         return false;
     }
 
-    boolean onHangulCharTyped(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
+    boolean onHangulCharTyped(ScreenEvent.KeyboardCharTypedEvent.Pre event) {
         boolean shift = (event.getModifiers() & 0x01) == 1;
 
         TextComponentWrapper comp = NaraeUtils.getTextComponent();
@@ -223,7 +223,7 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
         return true;
     }
 
-    public void typedTextField(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
+    public void typedTextField(ScreenEvent.KeyboardCharTypedEvent.Pre event) {
         TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return;
 
@@ -245,17 +245,17 @@ public class Hangul_Set_2_Layout implements KeyboardLayout {
         }
     }
 
-    public void typedTextInput(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
+    public void typedTextInput(ScreenEvent.KeyboardCharTypedEvent.Pre event) {
     }
 
     @Override
-    public void onCharTyped(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
+    public void onCharTyped(ScreenEvent.KeyboardCharTypedEvent.Pre event) {
         typedTextField(event);
         typedTextInput(event);
     }
 
     @Override
-    public void onKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    public void onKeyPressed(ScreenEvent.KeyboardKeyPressedEvent.Pre event) {
         boolean isCanceled = false;
 
         TextComponentWrapper comp = NaraeUtils.getTextComponent();

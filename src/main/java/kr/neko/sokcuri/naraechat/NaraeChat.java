@@ -10,9 +10,11 @@ import kr.neko.sokcuri.naraechat.Keyboard.*;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.controls.ControlsScreen;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -22,7 +24,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -79,7 +80,7 @@ public final class NaraeChat
     }
 
     @SubscribeEvent
-    public void proxyHangulSpecificKey(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    public void proxyHangulSpecificKey(ScreenEvent.KeyboardKeyPressedEvent.Pre event) {
 
         int keyCode = event.getKeyCode();
         int scanCode = event.getScanCode();
@@ -111,8 +112,8 @@ public final class NaraeChat
         }
 
         // 키 바인딩 설정창일 때 우측 CONTROL이나 ALT가 단독으로만 동작하게 만들기
-        if (mc.screen instanceof ControlsScreen) {
-            ControlsScreen controlsScreen = (ControlsScreen)mc.screen;
+        if (mc.screen instanceof KeyBindsScreen) {
+            KeyBindsScreen controlsScreen = (KeyBindsScreen)mc.screen;
             if (keyCode == GLFW_KEY_RIGHT_CONTROL || keyCode == GLFW_KEY_RIGHT_ALT) {
                 controlsScreen.keyPressed(keyCode, scanCode, glfwModifier);
                 controlsScreen.selectedKey = null;
@@ -138,12 +139,12 @@ public final class NaraeChat
     }
 
     @SubscribeEvent
-    public void onKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    public void onKeyPressed(ScreenEvent.KeyboardKeyPressedEvent.Pre event) {
         keyboard.onKeyPressed(event);
     }
 
     @SubscribeEvent
-    public void onCharTyped(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
+    public void onCharTyped(ScreenEvent.KeyboardCharTypedEvent.Pre event) {
         keyboard.onCharTyped(event);
     }
 
