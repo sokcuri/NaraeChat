@@ -4,7 +4,6 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 public final class ObfuscatedMethod<O, R> {
 
@@ -20,7 +19,7 @@ public final class ObfuscatedMethod<O, R> {
         public static final ObfuscatedMethod<CreativeModeInventoryScreen, Void> updateCreativeSearch;
 
         static {
-            updateCreativeSearch        = new ObfuscatedMethod("updateCreativeSearch", "func_147053_i", CreativeModeInventoryScreen.class, void.class);
+            updateCreativeSearch        = new ObfuscatedMethod("refreshSearchResults", "m_98630_", CreativeModeInventoryScreen.class, void.class);
         }
     }
 
