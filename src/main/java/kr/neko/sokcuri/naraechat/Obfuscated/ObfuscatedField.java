@@ -1,11 +1,10 @@
 package kr.neko.sokcuri.naraechat.Obfuscated;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.fonts.TextInputUtil;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.font.TextFieldHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -21,48 +20,49 @@ public final class ObfuscatedField<O, T> {
     private final Class<T> retClass;
 
     public static class $TextFieldWidget {
-        public static final ObfuscatedField<TextFieldWidget, Boolean> canLoseFocus;
-        public static final ObfuscatedField<TextFieldWidget, Boolean> enableBackgroundDrawing;
-        public static final ObfuscatedField<TextFieldWidget, Consumer<String>> guiResponder;
-        public static final ObfuscatedField<TextFieldWidget, Boolean> isEnabled;
-        public static final ObfuscatedField<TextFieldWidget, Integer> lineScrollOffset;
-        public static final ObfuscatedField<TextFieldWidget, Integer> maxStringLength;
-        public static final ObfuscatedField<TextFieldWidget, Integer> selectionEnd;
+        public static final ObfuscatedField<EditBox, Boolean> canLoseFocus;
+        public static final ObfuscatedField<EditBox, Boolean> enableBackgroundDrawing;
+        public static final ObfuscatedField<EditBox, Consumer<String>> guiResponder;
+        public static final ObfuscatedField<EditBox, Boolean> isEnabled;
+        public static final ObfuscatedField<EditBox, Integer> lineScrollOffset;
+        public static final ObfuscatedField<EditBox, Integer> maxStringLength;
+        public static final ObfuscatedField<EditBox, Integer> selectionEnd;
 
         static {
-            canLoseFocus                = new ObfuscatedField("canLoseFocus", "field_146212_n", TextFieldWidget.class, boolean.class);
-            enableBackgroundDrawing     = new ObfuscatedField("enableBackgroundDrawing", "field_146215_m", TextFieldWidget.class, boolean.class);
-            guiResponder                = new ObfuscatedField("guiResponder", "field_175210_x", TextFieldWidget.class, Consumer.class);
-            isEnabled                   = new ObfuscatedField("isEnabled", "field_146226_p", TextFieldWidget.class, boolean.class);
-            lineScrollOffset            = new ObfuscatedField("lineScrollOffset", "field_146225_q", TextFieldWidget.class, int.class);
-            maxStringLength             = new ObfuscatedField("maxStringLength", "field_146217_k", TextFieldWidget.class, int.class);
-            selectionEnd                = new ObfuscatedField("selectionEnd", "field_146223_s", TextFieldWidget.class, int.class);
+            canLoseFocus                = new ObfuscatedField("canLoseFocus", "f_94097_", EditBox.class, boolean.class);
+            enableBackgroundDrawing     = new ObfuscatedField("bordered", "f_94096_", EditBox.class, boolean.class);
+            guiResponder                = new ObfuscatedField("responder", "f_94089_", EditBox.class, Consumer.class);
+            isEnabled                   = new ObfuscatedField("isEditable", "f_94098_", EditBox.class, boolean.class);
+            lineScrollOffset            = new ObfuscatedField("displayPos", "f_94100_", EditBox.class, int.class);
+            maxStringLength             = new ObfuscatedField("maxLength", "f_94094_", EditBox.class, int.class);
+            selectionEnd                = new ObfuscatedField("highlightPos", "f_94102_", EditBox.class, int.class);
         }
     }
 
     public static class $TextInputUtil {
-        public static final ObfuscatedField<TextInputUtil, Supplier<String>> textSupplier;
-        public static final ObfuscatedField<TextInputUtil, Consumer<String>> textConsumer;
-        public static final ObfuscatedField<TextInputUtil, Predicate<String>> textPredicate;
-        public static final ObfuscatedField<TextInputUtil, Integer> maxStringLength;
-        public static final ObfuscatedField<TextInputUtil, Integer> cursorPosition;
-        public static final ObfuscatedField<TextInputUtil, Integer> cursorPosition2;
+        public static final ObfuscatedField<TextFieldHelper, Supplier<String>> textSupplier;
+        public static final ObfuscatedField<TextFieldHelper, Consumer<String>> textConsumer;
+        public static final ObfuscatedField<TextFieldHelper, Predicate<String>> textPredicate;
+        public static final ObfuscatedField<TextFieldHelper, Integer> maxStringLength;
+        public static final ObfuscatedField<TextFieldHelper, Integer> cursorPosition;
+        public static final ObfuscatedField<TextFieldHelper, Integer> cursorPosition2;
 
         static {
-            textSupplier                = new ObfuscatedField("textConsumer", "field_216902_c", TextInputUtil.class, Supplier.class);
-            textConsumer                = new ObfuscatedField("textSupplier", "field_216903_d", TextInputUtil.class, Consumer.class);
-            textPredicate               = new ObfuscatedField("textPredicate", "field_238566_e_", TextInputUtil.class, Consumer.class);
-            maxStringLength             = new ObfuscatedField("field_216906_g", "field_216906_g", TextInputUtil.class, int.class);
-            cursorPosition              = new ObfuscatedField("field_216905_f", "field_216905_f", TextInputUtil.class, int.class);
-            cursorPosition2             = new ObfuscatedField("field_216906_g", "field_216906_g", TextInputUtil.class, int.class);
+            //
+            textSupplier                = new ObfuscatedField("getMessageFn", "f_95129_", TextFieldHelper.class, Supplier.class);
+            textConsumer                = new ObfuscatedField("setMessageFn", "f_95130_", TextFieldHelper.class, Consumer.class);
+            textPredicate               = new ObfuscatedField("stringValidator", "f_95133_", TextFieldHelper.class, Predicate.class);
+            maxStringLength             = new ObfuscatedField("field_216906_g", "field_216906_g", TextFieldHelper.class, int.class);
+            cursorPosition              = new ObfuscatedField("cursorPos", "f_95134_", TextFieldHelper.class, int.class);
+            cursorPosition2             = new ObfuscatedField("selectionPos", "f_95135_", TextFieldHelper.class, int.class);
         }
     }
 
     public static class $Widget {
-        public static final ObfuscatedField<Widget, Boolean> focused;
+        public static final ObfuscatedField<AbstractWidget, Boolean> focused;
 
         static {
-            focused                     = new ObfuscatedField("focused", "field_230686_c_", Widget.class, boolean.class);
+            focused                     = new ObfuscatedField("focused", "f_93616_", AbstractWidget.class, boolean.class);
         }
     }
 
@@ -90,7 +90,7 @@ public final class ObfuscatedField<O, T> {
     }
 
     public T get(O obj) {
-        return (T)ObfuscationReflectionHelper.getPrivateValue(owner, obj, isDeobf ? deobfName : obfName);
+        return (T) ObfuscationReflectionHelper.getPrivateValue(owner, obj, isDeobf ? deobfName : obfName);
     }
 
     public void set(O obj, T value) {

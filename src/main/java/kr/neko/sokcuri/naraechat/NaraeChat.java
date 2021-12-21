@@ -1,26 +1,25 @@
 package kr.neko.sokcuri.naraechat;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import com.sun.jna.win32.StdCallLibrary;
 
 import kr.neko.sokcuri.naraechat.Keyboard.*;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.INestedGuiEventHandler;
-import net.minecraft.client.gui.screen.ControlsScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.gui.screens.controls.ControlsScreen;
+import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -28,6 +27,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.text.JTextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +40,13 @@ public final class NaraeChat
 {
     private static KeyboardLayout keyboard = Hangul_Set_2_Layout.getInstance();
     private static List<KeyboardLayout> keyboardArray = new ArrayList<>();
-    public static KeyBinding[] keyBindings;
+    public static KeyMapping[] keyBindings;
 
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
     private int getBindingKeyCode(int n) {
-        return keyBindings[n].getKey().getKeyCode();
+        return keyBindings[n].getKey().getValue();
     }
 
     private void switchKeyboardLayout() {
@@ -80,7 +80,7 @@ public final class NaraeChat
     }
 
     @SubscribeEvent
-    public void proxyHangulSpecificKey(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    public void proxyHangulSpecificKey(ScreenEvent.KeyboardKeyPressedEvent.Pre event) {
 
         int keyCode = event.getKeyCode();
         int scanCode = event.getScanCode();
@@ -112,11 +112,11 @@ public final class NaraeChat
         }
 
         // 키 바인딩 설정창일 때 우측 CONTROL이나 ALT가 단독으로만 동작하게 만들기
-        if (mc.currentScreen instanceof ControlsScreen) {
-            ControlsScreen controlsScreen = (ControlsScreen)mc.currentScreen;
+        if (mc.screen instanceof KeyBindsScreen) {
+            KeyBindsScreen controlsScreen = (KeyBindsScreen)mc.screen;
             if (keyCode == GLFW_KEY_RIGHT_CONTROL || keyCode == GLFW_KEY_RIGHT_ALT) {
                 controlsScreen.keyPressed(keyCode, scanCode, glfwModifier);
-                controlsScreen.buttonId = null;
+                controlsScreen.selectedKey = null;
                 event.setCanceled(true);
                 return;
             }
@@ -129,22 +129,22 @@ public final class NaraeChat
             modifier = KeyModifier.NONE;
         }
 
-        if (keyBindings[0].matchesKey(keyCode, scanCode) && keyBindings[0].getKeyModifier() == modifier) {
+        if (keyBindings[0].matches(keyCode, scanCode) && keyBindings[0].getKeyModifier() == modifier) {
             switchKeyboardLayout();
         }
 
-        if (keyBindings[1].matchesKey(keyCode, scanCode) && keyBindings[1].getKeyModifier() == modifier) {
+        if (keyBindings[1].matches(keyCode, scanCode) && keyBindings[1].getKeyModifier() == modifier) {
             // hanja
         }
     }
 
     @SubscribeEvent
-    public void onKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    public void onKeyPressed(ScreenEvent.KeyboardKeyPressedEvent.Pre event) {
         keyboard.onKeyPressed(event);
     }
 
     @SubscribeEvent
-    public void onCharTyped(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
+    public void onCharTyped(ScreenEvent.KeyboardCharTypedEvent.Pre event) {
         keyboard.onCharTyped(event);
     }
 
@@ -161,22 +161,22 @@ public final class NaraeChat
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // declare an array of key bindings
-        keyBindings = new KeyBinding[2];
+        keyBindings = new KeyMapping[2];
 
         // instantiate the key bindings
-        keyBindings[0] = new KeyBinding("key.naraechat.ime_switch.desc", GLFW_KEY_RIGHT_ALT, "key.naraechat.category");
-        keyBindings[1] = new KeyBinding("key.naraechat.hanja.desc", GLFW_KEY_RIGHT_CONTROL, "key.naraechat.category");
+        keyBindings[0] = new KeyMapping("key.naraechat.ime_switch.desc", GLFW_KEY_RIGHT_ALT, "key.naraechat.category");
+        keyBindings[1] = new KeyMapping("key.naraechat.hanja.desc", GLFW_KEY_RIGHT_CONTROL, "key.naraechat.category");
 
         if (Platform.isWindows()) {
-            keyBindings[0].setKeyModifierAndCode(KeyModifier.NONE, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW_KEY_RIGHT_ALT));
-            keyBindings[1].setKeyModifierAndCode(KeyModifier.NONE, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW_KEY_RIGHT_CONTROL));
+            keyBindings[0].setKeyModifierAndCode(KeyModifier.NONE, InputConstants.Type.KEYSYM.getOrCreate(GLFW_KEY_RIGHT_ALT));
+            keyBindings[1].setKeyModifierAndCode(KeyModifier.NONE, InputConstants.Type.KEYSYM.getOrCreate(GLFW_KEY_RIGHT_CONTROL));
         }
         else if (Platform.isMac()) {
-            keyBindings[0].setKeyModifierAndCode(KeyModifier.CONTROL, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW_KEY_SPACE));
-            keyBindings[1].setKeyModifierAndCode(KeyModifier.SHIFT, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW_KEY_ENTER));
+            keyBindings[0].setKeyModifierAndCode(KeyModifier.CONTROL, InputConstants.Type.KEYSYM.getOrCreate(GLFW_KEY_SPACE));
+            keyBindings[1].setKeyModifierAndCode(KeyModifier.SHIFT, InputConstants.Type.KEYSYM.getOrCreate(GLFW_KEY_ENTER));
         } else {
-            keyBindings[0].setKeyModifierAndCode(KeyModifier.CONTROL, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW_KEY_SPACE));
-            keyBindings[1].setKeyModifierAndCode(KeyModifier.NONE, InputMappings.Type.KEYSYM.getOrMakeInput(GLFW_KEY_F9));
+            keyBindings[0].setKeyModifierAndCode(KeyModifier.CONTROL, InputConstants.Type.KEYSYM.getOrCreate(GLFW_KEY_SPACE));
+            keyBindings[1].setKeyModifierAndCode(KeyModifier.NONE, InputConstants.Type.KEYSYM.getOrCreate(GLFW_KEY_F9));
         }
 
         // register all the key bindings

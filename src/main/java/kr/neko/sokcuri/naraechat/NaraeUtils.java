@@ -6,9 +6,8 @@ import kr.neko.sokcuri.naraechat.Wrapper.TextComponentWrapper;
 import kr.neko.sokcuri.naraechat.Wrapper.TextFieldWidgetWrapper;
 import kr.neko.sokcuri.naraechat.Wrapper.TextInputUtilWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.fonts.TextInputUtil;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.font.TextFieldHelper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -17,12 +16,12 @@ import java.util.List;
 
 public class NaraeUtils {
 
-    private static ReflectionFieldMap<TextFieldWidget> textFieldWidgetRefMap = new ReflectionFieldMap(TextFieldWidget.class);
-    private static ReflectionFieldMap<TextInputUtil> textInputUtilRefMap = new ReflectionFieldMap(TextInputUtil.class);
+    private static ReflectionFieldMap<EditBox> textFieldWidgetRefMap = new ReflectionFieldMap(EditBox.class);
+    private static ReflectionFieldMap<TextFieldHelper> textInputUtilRefMap = new ReflectionFieldMap(TextFieldHelper.class);
 
     public static TextComponentWrapper getTextComponent() {
-        TextFieldWidget widget = getWidget();
-        TextInputUtil inputUtil = getTextInput();
+        EditBox widget = getWidget();
+        TextFieldHelper inputUtil = getTextInput();
 
         if (widget != null) {
             return new TextFieldWidgetWrapper(widget);
@@ -34,17 +33,17 @@ public class NaraeUtils {
         return null;
     }
 
-    private static TextInputUtil getTextInput() {
+    private static TextFieldHelper getTextInput() {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.currentScreen == null) return null;
+        if (mc.screen == null) return null;
 
-        return textInputUtilRefMap.findField(mc.currentScreen);
+        return textInputUtilRefMap.findField(mc.screen);
     }
 
-    private static TextFieldWidget getWidget() {
+    private static EditBox getWidget() {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.currentScreen == null) return null;
+        if (mc.screen == null) return null;
 
-        return textFieldWidgetRefMap.findField(mc.currentScreen);
+        return textFieldWidgetRefMap.findField(mc.screen);
     }
 }

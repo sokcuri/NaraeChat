@@ -1,6 +1,6 @@
 package kr.neko.sokcuri.naraechat.Keyboard;
 
-import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 
 import java.awt.*;
@@ -29,12 +29,12 @@ public class Hangul_Set_3_91_Layout implements KeyboardLayout {
     }
 
     @Override
-    public void onCharTyped(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) {
+    public void onCharTyped(ScreenEvent.KeyboardCharTypedEvent.Pre event) {
 
     }
 
     @Override
-    public void onKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) {
+    public void onKeyPressed(ScreenEvent.KeyboardKeyPressedEvent.Pre event) {
 
     }
 
