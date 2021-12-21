@@ -2,17 +2,17 @@ package kr.neko.sokcuri.naraechat.Wrapper;
 
 import kr.neko.sokcuri.naraechat.Obfuscated.ObfuscatedField;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.fonts.TextInputUtil;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.font.TextFieldHelper;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class TextInputUtilWrapper implements TextComponentWrapper {
-    private final TextInputUtil base;
+    private final TextFieldHelper base;
 
-    public TextInputUtilWrapper(TextInputUtil inputUtil) {
+    public TextInputUtilWrapper(TextFieldHelper inputUtil) {
         this.base = inputUtil;
     }
 
@@ -20,8 +20,8 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
         return Minecraft.getInstance();
     }
 
-    public FontRenderer getFontRenderer() {
-        return Minecraft.getInstance().fontRenderer;
+    public Font getFontRenderer() {
+        return Minecraft.getInstance().font;
     }
 
     public Supplier<String> getSupplier() {

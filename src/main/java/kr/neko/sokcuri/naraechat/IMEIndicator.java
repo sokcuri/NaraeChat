@@ -1,15 +1,13 @@
 package kr.neko.sokcuri.naraechat;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import kr.neko.sokcuri.naraechat.Keyboard.KeyboardLayout;
 import kr.neko.sokcuri.naraechat.Wrapper.TextComponentWrapper;
 import kr.neko.sokcuri.naraechat.Wrapper.TextFieldWidgetWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.gui.Font;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -44,7 +42,7 @@ public class IMEIndicator {
         }
 
         TextFieldWidgetWrapper wrapper = (TextFieldWidgetWrapper)comp;
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+        Font font = Minecraft.getInstance().font;
 
         boolean enableBackgroundDrawing = wrapper.getEnableBackgroundDrawing();
         boolean isEnabled = wrapper.isEnabled();
@@ -69,11 +67,11 @@ public class IMEIndicator {
         String indicatorStr = indicatorFirst + indicatorLast;
 
         int indicatorMargin = 1;
-        int indicatorFirstWidth = fontRenderer.getStringWidth(indicatorFirst);
-        int indicatorWidth = fontRenderer.getStringWidth(indicatorStr);
-        int indicatorHeight = fontRenderer.getWordWrappedHeight(indicatorStr, 100);
+        int indicatorFirstWidth = font.width(indicatorFirst);
+        int indicatorWidth = font.width(indicatorStr);
+        int indicatorHeight = font.wordWrapHeight(indicatorStr, 100);
 
-        int strWidth = fontRenderer.getStringWidth(text);
+        int strWidth = font.width(text);
         if (strWidth + indicatorWidth > width) {
             indicatorX = x + width - indicatorWidth;
         } else {
@@ -102,8 +100,8 @@ public class IMEIndicator {
         }
 
         drawIndicatorBox(indicatorX - indicatorMargin, y - height - indicatorMargin, indicatorX + indicatorWidth + indicatorMargin, y - height + indicatorHeight + indicatorMargin);
-        fontRenderer.drawString(new MatrixStack(), indicatorFirst, indicatorX, y - height, layout.getIndicatorColor().getRGB());
-        fontRenderer.drawString(new MatrixStack(), indicatorLast, indicatorX + indicatorFirstWidth, y - height, new Color(0xFF, 0xFF, 0xFF).getRGB());
+        font.draw(new PoseStack(), indicatorFirst, indicatorX, y - height, layout.getIndicatorColor().getRGB());
+        font.draw(new PoseStack(), indicatorLast, indicatorX + indicatorFirstWidth, y - height, new Color(0xFF, 0xFF, 0xFF).getRGB());
     }
 
     void drawIndicatorBox(float x, float y, float cx, float cy) {
@@ -119,23 +117,23 @@ public class IMEIndicator {
             cy = j;
         }
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        GlStateManager.enableBlend();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.polygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        GlStateManager.color4f(0.0f, 0.0f, 0.0f, 0.7f);
-        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
-        GlStateManager.disableTexture();
-        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        bufferbuilder.pos(x, cy, 0.0D).endVertex();
-        bufferbuilder.pos(cx, cy, 0.0D).endVertex();
-        bufferbuilder.pos(cx, y, 0.0D).endVertex();
-        bufferbuilder.pos(x, y, 0.0D).endVertex();
-        tessellator.draw();
-        GlStateManager.enableTexture();
-        GlStateManager.disableAlphaTest();
-        GlStateManager.disableBlend();
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferbuilder = tesselator.getBuilder();
+        GlStateManager._enableBlend();
+//        GlStateManager.enableAlphaTest(); // need to prove why this unnecessary
+        GlStateManager._polygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        RenderSystem.setShaderColor(0.0f, 0.0f, 0.0f, 0.7f);
+//        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f); // TODO: is this unnecessary?
+        GlStateManager._disableTexture();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+        bufferbuilder.vertex(x, cy, 0.0D).endVertex();
+        bufferbuilder.vertex(cx, cy, 0.0D).endVertex();
+        bufferbuilder.vertex(cx, y, 0.0D).endVertex();
+        bufferbuilder.vertex(x, y, 0.0D).endVertex();
+        tesselator.end();
+        GlStateManager._enableTexture();
+//        GlStateManager.disableAlphaTest();
+        GlStateManager._disableBlend();
     }
 
 }

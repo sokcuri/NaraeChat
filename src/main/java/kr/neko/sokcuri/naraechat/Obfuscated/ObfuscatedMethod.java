@@ -1,10 +1,7 @@
 package kr.neko.sokcuri.naraechat.Obfuscated;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.inventory.CreativeScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -20,10 +17,10 @@ public final class ObfuscatedMethod<O, R> {
     private final Class<?>[] parameters;
 
     public static class $CreativeScreen {
-        public static final ObfuscatedMethod<CreativeScreen, Void> updateCreativeSearch;
+        public static final ObfuscatedMethod<CreativeModeInventoryScreen, Void> updateCreativeSearch;
 
         static {
-            updateCreativeSearch        = new ObfuscatedMethod("updateCreativeSearch", "func_147053_i", CreativeScreen.class, void.class);
+            updateCreativeSearch        = new ObfuscatedMethod("refreshSearchResults", "m_98630_", CreativeModeInventoryScreen.class, void.class);
         }
     }
 
@@ -57,7 +54,7 @@ public final class ObfuscatedMethod<O, R> {
 
     public R invoke(O obj, Object... args) {
         try {
-            return (R)ObfuscationReflectionHelper.findMethod(owner, isDeobf ? deobfName : obfName, parameters).invoke(obj, args);
+            return (R) ObfuscationReflectionHelper.findMethod(owner, isDeobf ? deobfName : obfName, parameters).invoke(obj, args);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
