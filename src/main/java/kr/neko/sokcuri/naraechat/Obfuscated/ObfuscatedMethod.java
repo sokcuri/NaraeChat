@@ -20,7 +20,7 @@ public final class ObfuscatedMethod<O, R> {
         public static final ObfuscatedMethod<CreativeModeInventoryScreen, Void> updateCreativeSearch;
 
         static {
-            updateCreativeSearch        = new ObfuscatedMethod("updateCreativeSearch", "func_147053_i", CreativeModeInventoryScreen.class, void.class);
+            updateCreativeSearch        = new ObfuscatedMethod("refreshSearchResults", "m_98630_", CreativeModeInventoryScreen.class, void.class);
         }
     }
 
